@@ -53,6 +53,7 @@ class MainApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
+      debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       home: const ChannelsPage(),
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'repository.dart';
 
 class ChannelsPage extends StatelessWidget {
@@ -18,6 +20,46 @@ class ChannelsPage extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 2,
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/nostr.svg',
+              width: 24,
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.onSurface,
+                BlendMode.srcIn,
+              ),
+            ),
+            onPressed: () async {
+              final url = Uri.parse(
+                'https://nosta.me/b22b06b051fd5232966a9344a634d956c3dc33a7f5ecdcad9ed11ddc4120a7f2',
+              );
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url, mode: LaunchMode.externalApplication);
+              }
+            },
+            tooltip: 'View on Nostr',
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/github.svg',
+              width: 24,
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.onSurface,
+                BlendMode.srcIn,
+              ),
+            ),
+            onPressed: () async {
+              final url = Uri.parse('https://github.com/nogringo/bitstar');
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url, mode: LaunchMode.externalApplication);
+              }
+            },
+            tooltip: 'View on GitHub',
+          ),
+        ],
       ),
       body: GetBuilder<Repository>(
         builder: (repo) {
@@ -142,10 +184,10 @@ class ChannelsPage extends StatelessWidget {
                       final visibleName = roomName.startsWith('bc_')
                           ? roomName.substring(3)
                           : roomName;
-                      
+
                       // Copy visible channel name to clipboard
                       Clipboard.setData(ClipboardData(text: visibleName));
-                      
+
                       // Show toast notification
                       toastification.show(
                         context: context,

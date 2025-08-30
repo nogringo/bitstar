@@ -1,3 +1,3 @@
-# bitchat_channels
+# Bitstar
 
 Popular Bitchat channels
