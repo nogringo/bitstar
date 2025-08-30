@@ -67,19 +67,31 @@ class Repository extends GetxController {
   String _detectLanguage(String text) {
     // Simple heuristic-based language detection
     final lowerText = text.toLowerCase();
-    
+
     // Common word patterns for different languages
-    if (RegExp(r'\b(the|and|is|are|was|were|have|has|will|can|do|does)\b').hasMatch(lowerText)) {
+    if (RegExp(
+      r'\b(the|and|is|are|was|were|have|has|will|can|do|does)\b',
+    ).hasMatch(lowerText)) {
       return 'EN'; // English
-    } else if (RegExp(r'\b(le|la|les|de|et|est|sont|avec|pour|dans|un|une)\b').hasMatch(lowerText)) {
+    } else if (RegExp(
+      r'\b(le|la|les|de|et|est|sont|avec|pour|dans|un|une)\b',
+    ).hasMatch(lowerText)) {
       return 'FR'; // French
-    } else if (RegExp(r'\b(el|la|los|las|de|es|son|con|para|en|un|una)\b').hasMatch(lowerText)) {
+    } else if (RegExp(
+      r'\b(el|la|los|las|de|es|son|con|para|en|un|una)\b',
+    ).hasMatch(lowerText)) {
       return 'ES'; // Spanish
-    } else if (RegExp(r'\b(der|die|das|ist|sind|mit|für|in|ein|eine)\b').hasMatch(lowerText)) {
+    } else if (RegExp(
+      r'\b(der|die|das|ist|sind|mit|für|in|ein|eine)\b',
+    ).hasMatch(lowerText)) {
       return 'DE'; // German
-    } else if (RegExp(r'\b(o|a|os|as|de|é|são|com|para|em|um|uma)\b').hasMatch(lowerText)) {
+    } else if (RegExp(
+      r'\b(o|a|os|as|de|é|são|com|para|em|um|uma)\b',
+    ).hasMatch(lowerText)) {
       return 'PT'; // Portuguese
-    } else if (RegExp(r'\b(il|la|le|di|è|sono|con|per|in|un|una)\b').hasMatch(lowerText)) {
+    } else if (RegExp(
+      r'\b(il|la|le|di|è|sono|con|per|in|un|una)\b',
+    ).hasMatch(lowerText)) {
       return 'IT'; // Italian
     } else if (RegExp(r'[\u4e00-\u9fff]').hasMatch(text)) {
       return 'ZH'; // Chinese
@@ -92,7 +104,7 @@ class Repository extends GetxController {
     } else if (RegExp(r'[\u0400-\u04ff]').hasMatch(text)) {
       return 'RU'; // Russian/Cyrillic
     }
-    
+
     return 'EN'; // Default to English
   }
 
