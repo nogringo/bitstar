@@ -1,3 +1,3 @@
 # bitchat_channels
 
-A new Flutter project.
+Popular Bitchat channels

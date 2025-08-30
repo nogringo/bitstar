@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:toastification/toastification.dart';
 import 'repository.dart';
 
 class ChannelsPage extends StatelessWidget {
@@ -136,7 +138,25 @@ class ChannelsPage extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
-                      // TODO: Navigate to room detail page
+                      // Get the visible name (without bc_ prefix if it's a geo channel)
+                      final visibleName = roomName.startsWith('bc_')
+                          ? roomName.substring(3)
+                          : roomName;
+                      
+                      // Copy visible channel name to clipboard
+                      Clipboard.setData(ClipboardData(text: visibleName));
+                      
+                      // Show toast notification
+                      toastification.show(
+                        context: context,
+                        title: const Text('Channel name copied'),
+                        description: Text(visibleName),
+                        type: ToastificationType.success,
+                        style: ToastificationStyle.flat,
+                        autoCloseDuration: const Duration(seconds: 3),
+                        alignment: Alignment.bottomRight,
+                        showProgressBar: false,
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(16),
