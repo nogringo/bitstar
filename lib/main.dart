@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ndk/ndk.dart';
+import 'channels_page.dart';
+import 'repository.dart';
 
 class NoEventVerifier extends EventVerifier {
   @override
@@ -28,6 +30,10 @@ void main() async {
   );
   Get.put(ndk);
 
+  final repository = Repository();
+  Get.put(repository);
+  repository.listenRooms();
+
   runApp(const MainApp());
 }
 
@@ -36,12 +42,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return GetMaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.teal,
+          brightness: Brightness.dark,
         ),
       ),
+      themeMode: ThemeMode.system,
+      home: const ChannelsPage(),
     );
   }
 }
