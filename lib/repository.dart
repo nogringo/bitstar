@@ -8,6 +8,7 @@ class Repository extends GetxController {
 
   Map<String, List<Nip01Event>> rooms = {};
   Map<String, String> names = {};
+  Map<String, String> roomLanguages = {};
   NdkResponse? roomsSubscription;
 
   List<String> getPopularRooms() {
@@ -63,6 +64,38 @@ class Repository extends GetxController {
     roomsSubscription!.stream.listen(onEvent);
   }
 
+  String _detectLanguage(String text) {
+    // Simple heuristic-based language detection
+    final lowerText = text.toLowerCase();
+    
+    // Common word patterns for different languages
+    if (RegExp(r'\b(the|and|is|are|was|were|have|has|will|can|do|does)\b').hasMatch(lowerText)) {
+      return 'EN'; // English
+    } else if (RegExp(r'\b(le|la|les|de|et|est|sont|avec|pour|dans|un|une)\b').hasMatch(lowerText)) {
+      return 'FR'; // French
+    } else if (RegExp(r'\b(el|la|los|las|de|es|son|con|para|en|un|una)\b').hasMatch(lowerText)) {
+      return 'ES'; // Spanish
+    } else if (RegExp(r'\b(der|die|das|ist|sind|mit|für|in|ein|eine)\b').hasMatch(lowerText)) {
+      return 'DE'; // German
+    } else if (RegExp(r'\b(o|a|os|as|de|é|são|com|para|em|um|uma)\b').hasMatch(lowerText)) {
+      return 'PT'; // Portuguese
+    } else if (RegExp(r'\b(il|la|le|di|è|sono|con|per|in|un|una)\b').hasMatch(lowerText)) {
+      return 'IT'; // Italian
+    } else if (RegExp(r'[\u4e00-\u9fff]').hasMatch(text)) {
+      return 'ZH'; // Chinese
+    } else if (RegExp(r'[\u3040-\u309f\u30a0-\u30ff]').hasMatch(text)) {
+      return 'JA'; // Japanese
+    } else if (RegExp(r'[\uac00-\ud7af]').hasMatch(text)) {
+      return 'KO'; // Korean
+    } else if (RegExp(r'[\u0600-\u06ff]').hasMatch(text)) {
+      return 'AR'; // Arabic
+    } else if (RegExp(r'[\u0400-\u04ff]').hasMatch(text)) {
+      return 'RU'; // Russian/Cyrillic
+    }
+    
+    return 'EN'; // Default to English
+  }
+
   onEvent(Nip01Event event) async {
     final uid = event.pubKey.substring(event.pubKey.length - 4);
     final nTag = event.getFirstTag("n");
@@ -84,6 +117,11 @@ class Repository extends GetxController {
 
     final roomName = gTag ?? dTag;
     if (roomName == null) return;
+
+    // Simple language detection from message content
+    if (roomLanguages[roomName] == null && event.content.isNotEmpty) {
+      roomLanguages[roomName] = _detectLanguage(event.content);
+    }
 
     if (!rooms.containsKey(roomName)) {
       rooms[roomName] = <Nip01Event>[].obs;

@@ -129,6 +129,34 @@ class ChannelsPage extends StatelessWidget {
                                   ).colorScheme.primary,
                                 ),
                               ),
+                            if (repo.roomLanguages[roomName] != null)
+                              Container(
+                                margin: const EdgeInsets.only(left: 8),
+                                child: Chip(
+                                  label: Text(
+                                    repo.roomLanguages[roomName]!,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                  visualDensity: VisualDensity.compact,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 0,
+                                  ),
+                                  shape: StadiumBorder(
+                                    side: BorderSide(
+                                      color: Theme.of(context).colorScheme.outline,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              ),
                           ],
                         ),
                       ),
