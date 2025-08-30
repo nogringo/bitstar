@@ -32,7 +32,7 @@ jobs:
         run: flutter pub get
 
       - name: Build web
-        run: flutter build web --release --base-href=/bitchat_channels/
+        run: flutter build web --release --base-href=/bitstar/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
